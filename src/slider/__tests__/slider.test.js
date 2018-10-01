@@ -7,14 +7,13 @@ import Slider from "../slider";
 
 describe("Testing Slider Component", () => {
 
-
-    beforeEach(() => {
-        sinon.restore();
-    });
+     beforeEach(() => {
+         sinon.restore();
+     });
 
     it("should render 3 cards on slider", (done) => {
 
-        const mockData =
+                const mockData =
             [
                 {
                     "id": 1,
@@ -45,24 +44,18 @@ describe("Testing Slider Component", () => {
                 }
             ];
 
-
-
         const promise = Promise.resolve(new Response(JSON.stringify(mockData)));
         const stub = sinon.stub(global, "fetch").callsFake(() => promise);
-
         const showCards = 3;
-
         const wrapper = mount(
-            <Slider maxShow={showCards} tabIndex={1} />
-        );
-
+                    <Slider maxShow={showCards} tabIndex={1} />
+                );
 
         setImmediate(() => {
-            expect(wrapper.state()).toHaveProperty("cards", mockData);
-            expect(wrapper.state().cards).toHaveLength(showCards);
-            done();
-        });
-
+                    expect(wrapper.state()).toHaveProperty("cards", mockData);
+                    expect(wrapper.state().cards).toHaveLength(showCards);
+                    done();
+                });
     });
 
     it("should render 1 cards on slider", (done) => {
@@ -92,7 +85,6 @@ describe("Testing Slider Component", () => {
         );
 
 
-        expect(wrapper).toMatchSnapshot();
         setImmediate(() => {
             expect(wrapper.state()).toHaveProperty("cards", mockData);
             expect(wrapper.state().cards).toHaveLength(showCards);
