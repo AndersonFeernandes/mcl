@@ -53,7 +53,7 @@ describe("Testing Slider Component", () => {
         const showCards = 3;
 
         const wrapper = mount(
-            <Slider show={showCards} tabIndex={1} />
+            <Slider maxShow={showCards} tabIndex={1} />
         );
 
 
@@ -89,7 +89,7 @@ describe("Testing Slider Component", () => {
         const showCards = 1;
 
         const wrapper = mount(
-            <Slider show={showCards} tabIndex={1} />
+            <Slider maxShow={showCards} tabIndex={1} />
         );
 
 

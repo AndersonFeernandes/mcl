@@ -16,15 +16,6 @@ const CardContent = styled.section`
     &:last-child{
         margin-right: 26px;
     }
-
-    @media(max-width: 900px){
-        width: 86%;
-        margin: 26px  0;
-
-        &:last-child{
-            margin-right: 0;
-        }
-    }
 `;
 
 const Header = styled.header`
@@ -69,10 +60,6 @@ const HeaderImage = styled.img`
     margin-left: -19px
     height:173.25px;
     animation: pulse 1500ms infinite;
-
-    @media(max-width: 900px){
-        width: 111.5%;
-    }
 
     @keyframes pulse {
         0% {

@@ -22,26 +22,29 @@ class Slider extends React.Component {
     // Life Cycle
     constructor(props, ctx) {
         super(props, ctx);
-        const { show } = this.props;
+        const { maxShow } = this.props;
 
         this.state = {
             cards: [],
-            show: show || 3,
+            maxShow: maxShow,
+            show: false,
+            lastShow: false,
             page: 0
 
         };
 
         this.changePage = this.changePage.bind(this);
+        this.getCardRender = this.getCardRender.bind(this);
     }
 
     async componentDidMount() {
-        const { page } = this.state;
+        this.getCardRender();
+        window.addEventListener("resize", this.getCardRender);
+    }
 
-        const cards = await this.getCards(page);
 
-        this.setState({
-            cards: cards
-        });
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.getCardRender);
     }
 
     // Getters
@@ -89,8 +92,13 @@ class Slider extends React.Component {
     }
 
     // API Service
-    async getCards(page) {
-        const { show } = this.state;
+    async getCards(page, firstShow = false) {
+        let { show } = this.state;
+
+        if (!show) {
+            show = firstShow;
+        }
+
         const headers = new Headers({
             "Accept": "application/json",
             "Content-Type": "application/json"
@@ -110,6 +118,36 @@ class Slider extends React.Component {
         return cards;
     }
 
+    // Responsive
+    async getCardRender() {
+        const { innerWidth } = window;
+        let { show, maxShow, page, cards, lastShow } = this.state;
+
+        const cardWidth = 420;
+
+        let cardShow = Math.floor(innerWidth / cardWidth);
+
+        if (maxShow && maxShow < cardShow) {
+            cardShow = maxShow;
+        }
+
+        if (cardShow === show && lastShow !== show) {
+            lastShow = show;
+            cards = await this.getCards(page, cardShow);
+            page = 0;
+        } else if (!(cardShow === show && lastShow !== show)) {
+            lastShow = show;
+            cards = await this.getCards(page, cardShow);
+        }
+
+        this.setState({
+            show: cardShow,
+            cards: cards,
+            page: page,
+            lastShow: lastShow
+        });
+    }
+
     // Accessibility
     handleAccessibility(e, next = true) {
         if (e.key === "Enter" || e.key === " ") {
@@ -121,11 +159,10 @@ class Slider extends React.Component {
     render() {
         const { cards } = this.state;
         const { tabIndex } = this.props;
-        const cardWidth = 388;
 
         return (
             <SliderContent>
-                <Page style={{ maxWidth: `${cards.length * cardWidth}px` }}>
+                <Page>
                     {cards.map((card, key) =>
                         <Card tabIndex={tabIndex} details={card} key={key} />
                     )}

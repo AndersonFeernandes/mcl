@@ -2,7 +2,6 @@ import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
 import jsdom from "jsdom";
-global.fetch = require("jest-fetch-mock");
 
 
 function setUpDomEnvironment() {

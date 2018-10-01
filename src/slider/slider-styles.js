@@ -27,6 +27,8 @@ const PageController = styled.footer`
 
 const SliderContent = styled.section`
     background-color: #F6F6F6
+    display: flex;
+    flex-direction: column;
 `;
 SliderContent.displayName = "SliderContent";
 
