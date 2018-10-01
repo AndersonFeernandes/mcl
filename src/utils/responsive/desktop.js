@@ -11,7 +11,7 @@ class Desktop extends React.Component {
         const { children } = this.props;
 
         return (
-            <MediaQuery query="(min-device-width: 1224px)">
+            <MediaQuery query="(min-width: 900px)">
                 {children}
             </MediaQuery>
         );

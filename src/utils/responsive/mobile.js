@@ -11,7 +11,7 @@ class Mobile extends React.Component {
         const { children } = this.props;
 
         return (
-            <MediaQuery query="(max-width: 1224px)">
+            <MediaQuery query="(max-width: 900px)">
                 {children}
             </MediaQuery>
         );

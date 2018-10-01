@@ -10,6 +10,7 @@ function setUpDomEnvironment() {
     const dom = new JSDOM("<!doctype html><html><body></body></html>", { url: "http://localhost/" });
     const { window } = dom;
 
+    global.dom = dom;
     global.window = window;
     global.document = window.document;
     global.navigator = {
@@ -29,7 +30,7 @@ setUpDomEnvironment();
 
 global.fetch = require("jest-fetch-mock");
 global.sinon = require("sinon");
-
+global.jsdom = jsdom;
 
 
 

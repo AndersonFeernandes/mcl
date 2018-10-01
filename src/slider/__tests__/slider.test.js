@@ -3,17 +3,18 @@ import "./../../test.setup";
 import React from "react";
 import { mount } from "enzyme";
 import Slider from "../slider";
-import Card from "../card/card";
-describe("Testing App Component", () => {
+
+
+describe("Testing Slider Component", () => {
 
 
     beforeEach(() => {
-        fetch.resetMocks();
+        sinon.restore();
     });
 
+    it("should render 3 cards on slider", (done) => {
 
-    it("should render 3 cards on slider", async() => {
-        const mockData = JSON.stringify(
+        const mockData =
             [
                 {
                     "id": 1,
@@ -42,44 +43,62 @@ describe("Testing App Component", () => {
                     "href": "https://mindera.com/people-and-culture/we-change/",
                     "is_liked": true
                 }
-            ]
-        );
+            ];
 
 
-        const promise = Promise.resolve(new Response(mockData));
+
+        const promise = Promise.resolve(new Response(JSON.stringify(mockData)));
         const stub = sinon.stub(global, "fetch").callsFake(() => promise);
 
-        const wrapper = mount(
-            <Slider show={3} tabIndex={1} />
-        );
+        const showCards = 3;
 
+        const wrapper = mount(
+            <Slider show={showCards} tabIndex={1} />
+        );
 
 
         expect(wrapper).toMatchSnapshot();
-        wrapper.instance().componentDidMount();
-
-        console.log(wrapper.children().find(Card).debug());
-
-        // return promise.then(() => {
-        //     // expect(wrapper.state()).toHaveProperty("dataReady", true);
-
-        //     wrapper.update();
-        // }).then(() => {
-
-        //     // expect(wrapper.text()).toContain("data is ready");
-        // });
-
+        setImmediate(() => {
+            expect(wrapper.state()).toHaveProperty("cards", mockData);
+            expect(wrapper.state().cards).toHaveLength(showCards);
+            done();
+        });
 
     });
 
+    it("should render 1 cards on slider", (done) => {
+
+        const mockData =
+            [
+                {
+                    "id": 1,
+                    "title": "We are Humans",
+                    "subtitle": "And we love humans",
+                    "text": "We act like humans, we talk like humans, and we think like humans. And we call out anyone who does the opposite.",
+                    "image_url": "https://picsum.photos/300/150/?random",
+                    "href": "https://mindera.com/people-and-culture/we-are-humans/",
+                    "is_liked": true
+                }
+            ];
 
 
-    //  expect(wrapper.state()).toHaveProperty("dataReady", true);
+
+        const promise = Promise.resolve(new Response(JSON.stringify(mockData)));
+        const stub = sinon.stub(global, "fetch").callsFake(() => promise);
+
+        const showCards = 1;
+
+        const wrapper = mount(
+            <Slider show={showCards} tabIndex={1} />
+        );
 
 
-    // expect(wrapper).toMatchSnapshot();
-    // expect(wrapper.children().find("Page")).toBeDefined();
-    // console.log(wrapper.children().find("Page").children().debug());
-    // expect(wrapper.children().find("Page").children()).toHaveLength(3);
+        expect(wrapper).toMatchSnapshot();
+        setImmediate(() => {
+            expect(wrapper.state()).toHaveProperty("cards", mockData);
+            expect(wrapper.state().cards).toHaveLength(showCards);
+            done();
+        });
 
+    });
 });

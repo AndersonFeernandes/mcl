@@ -17,7 +17,7 @@ const CardContent = styled.section`
         margin-right: 26px;
     }
 
-    @media(max-width: 1224px){
+    @media(max-width: 900px){
         width: 86%;
         margin: 26px  0;
 
@@ -70,7 +70,7 @@ const HeaderImage = styled.img`
     height:173.25px;
     animation: pulse 1500ms infinite;
 
-    @media(max-width: 1224px){
+    @media(max-width: 900px){
         width: 111.5%;
     }
 
