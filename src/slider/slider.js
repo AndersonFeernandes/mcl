@@ -42,6 +42,17 @@ class Slider extends React.Component {
     window.addEventListener("resize", this.getCardRender);
   }
 
+  async componentDidUpdate(prevProps, prevState) {
+    if (prevState.show !== this.state.show) {
+      const cards = await this.getCards(0);
+      this.setState({
+        cards: cards,
+        lastShow: false,
+        page: 0
+      });
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener("resize", this.getCardRender);
   }
@@ -92,7 +103,6 @@ class Slider extends React.Component {
   // API Service
   async getCards(page, firstShow = false) {
     let { show } = this.state;
-
     if (!show) {
       show = firstShow;
     }
@@ -120,9 +130,8 @@ class Slider extends React.Component {
 
   // Responsive
   async getCardRender() {
-    let { show, maxShow, page, cards, lastShow } = this.state;
+    let { show, maxShow, page, lastShow } = this.state;
     const { scrollWidth } = this.slider;
-
     const cardWidth = 420;
 
     let cardShow = Math.floor(scrollWidth / cardWidth);
@@ -137,16 +146,13 @@ class Slider extends React.Component {
 
     if (cardShow === show && lastShow !== show) {
       lastShow = show;
-      cards = await this.getCards(page, cardShow);
       page = 0;
     } else if (!(cardShow === show && lastShow !== show)) {
       lastShow = show;
-      cards = await this.getCards(page, cardShow);
     }
 
     this.setState({
       show: cardShow,
-      cards: cards,
       page: page,
       lastShow: lastShow
     });
