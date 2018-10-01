@@ -57,7 +57,6 @@ describe("Testing Slider Component", () => {
         );
 
 
-        expect(wrapper).toMatchSnapshot();
         setImmediate(() => {
             expect(wrapper.state()).toHaveProperty("cards", mockData);
             expect(wrapper.state().cards).toHaveLength(showCards);
